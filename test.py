@@ -47,6 +47,27 @@ class Snake(pygame.sprite.Sprite):
     def update(self):
         self.rect.move_ip(self.speed_x, self.speed_y)
 
+    def _handle_dir_x(self, event, key, dir):
+        if event.type == KEYDOWN and event.key == key:
+            self.speed_x -= dir
+        elif event.type == KEYUP and event.key == key:
+            self.speed_x += dir
+
+    def _handle_dir_y(self, event, key, dir):
+        if event.type == KEYDOWN and event.key == key:
+            self.speed_y -= dir
+        elif event.type == KEYUP and event.key == key:
+            self.speed_y += dir
+
+    def handle_event(self, event):
+        """ handle snake keyboard event """
+        self._handle_dir_x(event, K_LEFT, 1)
+        self._handle_dir_x(event, K_RIGHT, -1)
+        self._handle_dir_y(event, K_UP, 1)
+        self._handle_dir_y(event, K_DOWN, -1)
+
+
+
 def main():
 
     """this function is called when the program starts.
@@ -101,41 +122,17 @@ def main():
             if event.type == KEYDOWN:
                 print "Received event:", event
 
+            if event.type == KEYDOWN or event.type == KEYUP:
+                snake.handle_event(event)
 
             if event.type == QUIT:
                 return
-            elif event.type == KEYDOWN and event.key == K_UP:
-                snake.speed_y -= 2
-            elif event.type == KEYUP and event.key == K_UP:
-                snake.speed_y += 2
-
-            elif event.type == KEYDOWN and event.key == K_DOWN:
-                snake.speed_y += 1
-            elif event.type == KEYUP and event.key == K_DOWN:
-                snake.speed_y -= 1
-
-            elif event.type == KEYDOWN and event.key == K_LEFT:
-                snake.speed_x -= 1
-            elif event.type == KEYUP and event.key == K_LEFT:
-                snake.speed_x += 1
-
-            elif event.type == KEYDOWN and event.key == K_RIGHT:
-                snake.speed_x += 1
-            elif event.type == KEYUP and event.key == K_RIGHT:
-                snake.speed_x -= 1
-
             elif event.type == KEYDOWN and event.key == K_ESCAPE:
                 return
             elif event.type == MOUSEBUTTONDOWN:
                 pass
-#                 if fist.punch(chimp):
-#                     punch_sound.play() #punch
-#                     chimp.punched()
-#                 else:
-#                     whiff_sound.play() #miss
             elif event.type is MOUSEBUTTONUP:
                 pass
-                #fist.unpunch()
 
         allsprites.update()
 
